@@ -1,3 +1,4 @@
+import { createRecorder } from 'medooze-media-server'
 import {
   videoCodecs,
   headerExtensions
@@ -52,7 +53,12 @@ export const acceptSimulcastStream = (transport, offer, answer) => {
   // streamInfo :: StreamInfo
   for (const streamInfo of offerStreams.values()) {
     // incomingStream :: IncomingStream
+    console.log('create IncomingStream', streamInfo)
     const incomingStream = transport.createIncomingStream(streamInfo)
+    console.log('created IncomingStream', incomingStream)
+
+    const recorder = createRecorder(`tmp/${new Date()}.mp4`)
+    recorder.record(incomingStream)
 
     // trackInfos :: Map String TrackInfo
     const trackInfos = streamInfo.getTracks()
@@ -78,6 +84,11 @@ export const acceptSimulcastStream = (transport, offer, answer) => {
       }
     }
   }
+
+  const outgoingStream  = transport.createOutgoingStream({
+    video: true
+  })
+  answer.addStream(outgoingStream.getStreamInfo())
 
   return streamTable
 }

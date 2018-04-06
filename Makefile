@@ -9,6 +9,12 @@ test: build
 	node dist/test
 
 start: build
-	node dist/lib/server
+	node dist/server
 
-.PHONY: lint build
+build-client:
+	webpack
+
+dev:
+	webpack --watch --progress
+
+.PHONY: lint build test start build-client
