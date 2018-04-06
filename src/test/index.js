@@ -1,40 +1,34 @@
-import {
-  offerSdp,
-  receiveSdp
-} from './sdp'
-
 import { loadConfig } from '../lib/config/load'
-import { initOffer } from '../lib/streaming/init'
-import { forwardStream } from '../lib/streaming/forward'
-import { acceptSimulcastStream } from '../lib/streaming/accept'
+import { readJson, handleError } from '../lib/util'
+import { createSimulcastSourceHandler } from '../lib/handler/source'
+import { createSimulcastSinkHandler } from '../lib/handler/sink'
 
-(async () => {
+const runTest = async () => {
   const config = await loadConfig()
 
-  const { endpoint } = config
+  const createSimulcastSource = createSimulcastSourceHandler(config)
+  const createSimulcastSink = createSimulcastSinkHandler(config)
 
-  const {
-    offer,
-    answer,
-    transport
-  } = initOffer(endpoint, offerSdp)
+  const { offer: offer1 } = await readJson('fixture/offer-1.json')
+  const { offer: offer2 } = await readJson('fixture/offer-2.json')
 
-  const streamTable = acceptSimulcastStream(transport, offer, answer)
+  const sourceResult = await createSimulcastSource({ rawOffer: offer1 })
+  console.log('source result:', sourceResult)
 
-  console.log('simulcast answer:\n' + answer.toString())
+  const sessionId = sourceResult.session_id
+  for (const [trackId, rids] of Object.entries(sourceResult.tracks)) {
+    for (const rid of rids) {
+      const sinkResult = await createSimulcastSink({
+        rawOffer: offer2,
+        rid,
+        trackId,
+        sessionId
+      })
 
-  for (const [trackId, trackTable] of streamTable.entries()) {
-    for (const [rid, incomingStream] of trackTable.entries()) {
-      const {
-        offer,
-        answer,
-        transport
-      } = initOffer(endpoint, receiveSdp)
-
-      forwardStream(transport, offer, answer, rid, incomingStream)
-
-      console.log(`created forward stream with track ${trackId}, and rid ${rid}`)
-      console.log(answer.toString())
+      console.log(`sink result for track ${trackId} rid ${rid}:`, sinkResult)
     }
   }
-})()
+}
+
+handleError()
+runTest()

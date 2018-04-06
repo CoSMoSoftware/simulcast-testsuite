@@ -1,5 +1,6 @@
 import { createApp } from './app'
 import { createServer } from 'https'
+import { handleError } from './util'
 import { loadConfig } from './config/load'
 
 const runServer = async () => {
@@ -20,5 +21,6 @@ const runServer = async () => {
 }
 
 if (require.main === module) {
+  handleError()
   runServer()
 }

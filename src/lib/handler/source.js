@@ -1,16 +1,12 @@
-import {
-  randomId,
-  wrapHandler
-} from '../util'
-
+import { randomId } from '../util'
 import { initOffer } from '../streaming/init'
 import { acceptSimulcastStream } from '../streaming/accept'
 
 export const createSimulcastSourceHandler = config => {
   const { endpoint, sessionTable } = config
 
-  return wrapHandler(async (request, response) => {
-    const { offer: rawOffer } = request.body
+  return async args => {
+    const { rawOffer } = args
 
     if (typeof rawOffer !== 'string') {
       throw new Error('offer must be provided as JSON string')
@@ -28,9 +24,15 @@ export const createSimulcastSourceHandler = config => {
       sessionTable.delete(sessionId)
     })
 
-    response.json({
+    const trackResult = {}
+    for (const [trackId, trackTable] of streamTable.entries()) {
+      trackResult[trackId] = [...trackTable.keys()]
+    }
+
+    return {
       session_id: sessionId,
-      answer: answer.toString()
-    })
-  })
+      answer: answer.toString(),
+      tracks: trackResult
+    }
+  }
 }

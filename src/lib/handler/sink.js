@@ -1,17 +1,16 @@
-import {
-  wrapHandler
-} from '../util'
-
 import { initOffer } from '../streaming/init'
 import { forwardStream } from '../streaming/forward'
 
 export const createSimulcastSinkHandler = config => {
   const { endpoint, sessionTable } = config
 
-  return wrapHandler(async (request, response) => {
-    const { trackId, rid } = request.query
-    const { offer: rawOffer } = request.body
-    const sessionId = request.params.sessionId
+  return async args => {
+    const {
+      rid,
+      trackId,
+      rawOffer,
+      sessionId
+    } = args
 
     if (typeof rawOffer !== 'string') {
       throw new Error('offer must be provided as JSON string')
@@ -35,8 +34,8 @@ export const createSimulcastSinkHandler = config => {
     const { transport, offer, answer } = initOffer(endpoint, rawOffer)
     forwardStream(transport, offer, answer, rid, incomingTrack)
 
-    response.json({
+    return {
       answer: answer.toString()
-    })
-  })
+    }
+  }
 }
