@@ -1,10 +1,8 @@
 export const handleTrackEvent = (pc, container, label) => {
   pc.addEventListener('track', ev => {
     console.log('ontrack event:', ev)
-
+    
     const videoTrack = ev.track
-    console.log('videoTrack:', videoTrack)
-
     const videoElement = document.createElement('video')
     videoElement.srcObject = new MediaStream([videoTrack])
     videoElement.autoplay = true

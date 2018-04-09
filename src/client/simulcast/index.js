@@ -14,3 +14,6 @@ export const runSimulcastApp = async () => {
   const { sessionId, tracks } = result
   await createEchoStreams(sinkVideoContainer, sessionId, tracks)
 }
+
+window.addEventListener('load', () =>
+  runSimulcastApp().catch(console.error))

@@ -63,16 +63,6 @@ export const acceptSimulcastStream = (transport, offer, answer) => {
     outgoingStream.attachTo(incomingStream)
     answer.addStream(outgoingStream.getStreamInfo())
 
-    // Debugging code to make sure we are receiving video content
-    //
-    // const recorder = createRecorder(`tmp/${new Date()}.mp4`)
-    // recorder.record(incomingStream)
-    //
-    // setTimeout(() => {
-    //   console.log('stopping recording')
-    //   recorder.stop()
-    // }, 10000)
-
     // trackInfos :: Map String TrackInfo
     const trackInfos = streamInfo.getTracks()
 

@@ -14,3 +14,6 @@ export const runBroadcastApp = async () => {
   const { sessionId } = result
   await createEchoStream(sinkVideoContainer, sessionId)
 }
+
+window.addEventListener('load', () =>
+  runBroadcastApp().catch(console.error))
