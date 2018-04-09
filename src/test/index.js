@@ -1,5 +1,5 @@
 import { loadConfig } from '../server/config/load'
-import { readJson, handleError } from '../server/util'
+import { readJson, handleError } from '../server/common/util'
 import { createSimulcastSourceHandler } from '../server/simulcast/handler/source'
 import { createSimulcastSinkHandler } from '../server/simulcast/handler/sink'
 

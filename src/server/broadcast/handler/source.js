@@ -1,5 +1,5 @@
-import { randomId } from '../../util'
-import { initOffer } from '../streaming/init'
+import { randomId } from '../../common/util'
+import { initOffer } from '../../common/streaming/init'
 import { acceptBroadcastStream } from '../streaming/accept'
 
 export const createBroadcastSourceHandler = config => {

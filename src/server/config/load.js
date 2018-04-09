@@ -1,5 +1,5 @@
-import { readJson } from '../util'
 import { initConfig } from './init'
+import { readJson } from '../common/util'
 
 export const loadConfig = async () => {
   const rawConfig = await readJson('config/config.json')

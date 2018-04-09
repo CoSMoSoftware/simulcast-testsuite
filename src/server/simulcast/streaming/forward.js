@@ -1,7 +1,7 @@
 import {
   videoCodecs,
   headerExtensions
-} from './param'
+} from '../../common/streaming/param'
 
 /*
   Create a new stream in answer that forwards a given track with

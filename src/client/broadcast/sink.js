@@ -1,4 +1,4 @@
-import { handleTrackEvent } from './track'
+import { handleTrackEvent } from '../common/track'
 
 export const createEchoStream = async (container, sessionId) => {
   console.log(`creating echo stream for session ${sessionId}`)

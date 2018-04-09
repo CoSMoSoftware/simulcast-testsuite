@@ -1,4 +1,4 @@
-import { handleTrackEvent } from './track'
+import { handleTrackEvent } from '../common/track'
 
 export const createEchoStreams = async (container, sessionId, tracks) => {
   for (const [trackId, rids] of Object.entries(tracks)) {

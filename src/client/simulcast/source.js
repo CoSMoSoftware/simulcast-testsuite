@@ -1,4 +1,4 @@
-import { handleTrackEvent } from './track'
+import { handleTrackEvent } from '../common/track'
 
 export const streamSimulcast = async (sinkVideoContainer, videoElement) => {
   const mediaStream = await navigator.mediaDevices.getUserMedia({

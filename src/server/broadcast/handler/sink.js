@@ -1,5 +1,5 @@
-import { initOffer } from '../streaming/init'
 import { forwardStream } from '../streaming/forward'
+import { initOffer } from '../../common/streaming/init'
 
 export const createBroadcastSinkHandler = config => {
   const { endpoint, broadcastSessionTable } = config

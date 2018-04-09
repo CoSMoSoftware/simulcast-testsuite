@@ -1,8 +1,9 @@
-import { readFile } from '../util'
+import { readFile } from '../common/util'
 import MediaServer from 'medooze-media-server'
 
 export const initConfig = async rawConfig => {
   const {
+    debug,
     keyPath,
     certPath,
     staticDir,
@@ -17,8 +18,9 @@ export const initConfig = async rawConfig => {
   const simulcastSessionTable = new Map()
   const broadcastSessionTable = new Map()
 
-  MediaServer.enableDebug(true)
-  // MediaServer.enableUltraDebug(true)
+  if (debug) {
+    MediaServer.enableDebug(true)
+  }
 
   return {
     key,

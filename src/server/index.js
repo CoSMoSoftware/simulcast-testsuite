@@ -1,7 +1,7 @@
 import { createApp } from './app'
 import { createServer } from 'https'
-import { handleError } from './util'
 import { loadConfig } from './config/load'
+import { handleError } from './common/util'
 
 const runServer = async () => {
   const config = await loadConfig()

@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { wrapHandler } from '../../util'
+import { wrapHandler } from '../../common/util'
 import { createSimulcastSinkHandler } from './sink'
 import { createSimulcastSourceHandler } from './source'
 

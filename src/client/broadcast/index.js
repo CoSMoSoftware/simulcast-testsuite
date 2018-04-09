@@ -5,12 +5,11 @@ export const runBroadcastApp = async () => {
   console.log('running broadcast test')
 
   const sourceVideo = document.getElementById('source-video')
+  const sourceVideoContainer = document.getElementById('source-videos')
   const sinkVideoContainer = document.getElementById('sink-videos')
 
-  const result = await streamBroadcast(sinkVideoContainer, sourceVideo)
+  const result = await streamBroadcast(sourceVideoContainer, sourceVideo)
   console.log('stream result:', result)
-
-  // await new Promise(resolve => setTimeout(resolve, 3000))
 
   const { sessionId } = result
   await createEchoStream(sinkVideoContainer, sessionId)

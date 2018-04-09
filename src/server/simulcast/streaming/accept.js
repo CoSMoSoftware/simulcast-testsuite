@@ -2,7 +2,7 @@
 import {
   videoCodecs,
   headerExtensions
-} from './param'
+} from '../../common/streaming/param'
 
 /*
   Accept a simulcast stream by:

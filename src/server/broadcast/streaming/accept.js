@@ -1,22 +1,7 @@
-// import { createRecorder } from 'medooze-media-server'
 import {
   videoCodecs
-} from './param'
+} from '../../common/streaming/param'
 
-/*
-  Accept a simulcast stream by:
-    1. Take a transport and its associated offer / answer
-    2. Create IncomingStream object for each rid stream and
-       store them in a stream table
-    3. Add the accepted video offer to answer
-    4. Return the stream table
-
-  acceptSimulcastStream ::
-    Transport
-    -> SDPInfo
-    -> SDPInfo
-    -> Map String (Map String (Map String IncomingStreamTrack))
- */
 export const acceptBroadcastStream = (transport, offer, answer) => {
   // videoOffer :: MediaInfo
   const videoOffer = offer.getMedia('video')
