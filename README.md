@@ -15,6 +15,16 @@ npm run build-client
 npm start
 ```
 
+## Development
+
+For developing the front end client testing, a separate terminal should
+be opened running WebPack so that the client source is automatically
+rebuilt when the client source code is updated
+
+```bash
+npm run dev
+```
+
 ## Configuration
 
 The `serverAddress` field in [config/config.json](config/config.json) _must_
