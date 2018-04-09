@@ -1,7 +1,7 @@
 import { loadConfig } from '../server/config/load'
 import { readJson, handleError } from '../server/util'
-import { createSimulcastSourceHandler } from '../server/handler/source'
-import { createSimulcastSinkHandler } from '../server/handler/sink'
+import { createSimulcastSourceHandler } from '../server/simulcast/handler/source'
+import { createSimulcastSinkHandler } from '../server/simulcast/handler/sink'
 
 const runTest = async () => {
   const config = await loadConfig()

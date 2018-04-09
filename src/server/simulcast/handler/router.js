@@ -1,9 +1,9 @@
 import { Router } from 'express'
-import { wrapHandler } from '../util'
+import { wrapHandler } from '../../util'
 import { createSimulcastSinkHandler } from './sink'
 import { createSimulcastSourceHandler } from './source'
 
-export const createApiRouter = config => {
+export const createSimulcastApiRouter = config => {
   const router = Router()
 
   const createSimulcastSource = createSimulcastSourceHandler(config)

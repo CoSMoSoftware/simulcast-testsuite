@@ -1,4 +1,4 @@
-import { randomId } from '../util'
+import { randomId } from '../../util'
 import { initOffer } from '../streaming/init'
 import { acceptSimulcastStream } from '../streaming/accept'
 

@@ -16,8 +16,8 @@ export const initConfig = async rawConfig => {
 
   const sessionTable = new Map()
 
-  // MediaServer.enableDebug(true);
-  // MediaServer.enableUltraDebug(true);
+  MediaServer.enableDebug(true)
+  // MediaServer.enableUltraDebug(true)
 
   return {
     key,

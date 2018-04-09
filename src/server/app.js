@@ -1,6 +1,6 @@
 import express from 'express'
 import bodyParser from 'body-parser'
-import { createApiRouter } from './handler/router'
+import { createSimulcastApiRouter } from './simulcast/handler/router'
 
 export const createApp = config => {
   const { staticDir } = config
@@ -8,7 +8,7 @@ export const createApp = config => {
   const app = express()
 
   app.use(bodyParser.json())
-  app.use('/api', createApiRouter(config))
+  app.use('/api/simulcast', createSimulcastApiRouter(config))
   app.use(express.static(staticDir))
 
   return app

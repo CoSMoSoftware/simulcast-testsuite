@@ -10,8 +10,8 @@ export const streamSimulcast = async (sinkVideoContainer, videoElement) => {
   videoElement.autoplay = true
 
   const pc = new RTCPeerConnection({
-    bundlePolicy: 'max-bundle',
-    rtcpMuxPolicy: 'require'
+    // bundlePolicy: 'max-bundle',
+    // rtcpMuxPolicy: 'require'
   })
 
   handleTrackEvent(pc, sinkVideoContainer, 'Echo Stream')
@@ -30,6 +30,8 @@ export const streamSimulcast = async (sinkVideoContainer, videoElement) => {
       { rid: 'c', scaleDownResolutionBy: 4.0 }
     ]
   })
+
+  // const sender = pc.addTrack(videoTrack)
 
   // TODO: Remove setParameters call when releasing.
   // rid is a read only parameter and should not
@@ -57,7 +59,7 @@ export const streamSimulcast = async (sinkVideoContainer, videoElement) => {
   // We convert it to the new format temporarily to test the test.
   const offerSdp = offer.sdp.replace(': send rid=', ':send ')
 
-  const response = await fetch('/api/source', {
+  const response = await fetch('/api/simulcast/source', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'

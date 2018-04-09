@@ -1,4 +1,4 @@
-import { createRecorder } from 'medooze-media-server'
+// import { createRecorder } from 'medooze-media-server'
 import {
   videoCodecs,
   headerExtensions
@@ -28,6 +28,7 @@ export const acceptSimulcastStream = (transport, offer, answer) => {
   // simulcastInfo :: Optional SimulcastInfo
   const simulcastInfo = videoOffer.getSimulcast()
   if (!simulcastInfo) {
+    // console.warn('offer do not support simulcast')
     throw new Error('offer video must have simulcast enabled')
   }
 
@@ -55,12 +56,14 @@ export const acceptSimulcastStream = (transport, offer, answer) => {
     // incomingStream :: IncomingStream
     const incomingStream = transport.createIncomingStream(streamInfo)
 
-    // Debugging code to make sure we are receiving video content
     const outgoingStream = transport.createOutgoingStream({
       video: true
     })
+
     outgoingStream.attachTo(incomingStream)
     answer.addStream(outgoingStream.getStreamInfo())
+
+    // Debugging code to make sure we are receiving video content
     //
     // const recorder = createRecorder(`tmp/${new Date()}.mp4`)
     // recorder.record(incomingStream)
@@ -90,7 +93,7 @@ export const acceptSimulcastStream = (transport, offer, answer) => {
       for (const alternatives of encodings) {
         for (const encodingInfo of alternatives) {
           const rid = encodingInfo.getId()
-          trackTable.set(rid, incomingTrack)
+          trackTable.set(rid, incomingStream)
         }
       }
     }

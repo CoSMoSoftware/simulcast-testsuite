@@ -8,8 +8,8 @@ export const createEchoStreams = async (container, sessionId, tracks) => {
 
       handleTrackEvent(pc, container, `Simulcast RID ${rid}`)
 
-      const transceiver = pc.addTransceiver('video', {
-        direction: 'recvonly'
+      pc.addTransceiver('video', {
+        direction: 'sendrecv'
       })
 
       const offer = await pc.createOffer()
@@ -17,7 +17,7 @@ export const createEchoStreams = async (container, sessionId, tracks) => {
 
       await pc.setLocalDescription(offer)
 
-      const response = await fetch(`/api/sessions/${sessionId}/sink?trackId=${trackId}&rid=${rid}`, {
+      const response = await fetch(`/api/simulcast/sessions/${sessionId}/sink?trackId=${trackId}&rid=${rid}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -40,6 +40,8 @@ export const createEchoStreams = async (container, sessionId, tracks) => {
         type: 'answer',
         sdp: result.answer
       })
+
+      return
     }
   }
 }
