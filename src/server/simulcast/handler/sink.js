@@ -2,7 +2,7 @@ import { initOffer } from '../streaming/init'
 import { forwardStream } from '../streaming/forward'
 
 export const createSimulcastSinkHandler = config => {
-  const { endpoint, sessionTable } = config
+  const { endpoint, simulcastSessionTable } = config
 
   return async args => {
     const {
@@ -16,7 +16,7 @@ export const createSimulcastSinkHandler = config => {
       throw new Error('offer must be provided as JSON string')
     }
 
-    const streamTable = sessionTable.get(sessionId)
+    const streamTable = simulcastSessionTable.get(sessionId)
     if (!streamTable) {
       throw new Error(`invalid session ID ${sessionId}`)
     }

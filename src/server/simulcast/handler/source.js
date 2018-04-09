@@ -3,7 +3,7 @@ import { initOffer } from '../streaming/init'
 import { acceptSimulcastStream } from '../streaming/accept'
 
 export const createSimulcastSourceHandler = config => {
-  const { endpoint, sessionTable } = config
+  const { endpoint, simulcastSessionTable } = config
 
   return async args => {
     const { rawOffer } = args
@@ -17,11 +17,11 @@ export const createSimulcastSourceHandler = config => {
 
     const sessionId = await randomId()
 
-    sessionTable.set(sessionId, streamTable)
+    simulcastSessionTable.set(sessionId, streamTable)
 
     transport.on('stopped', ev => {
       console.log(`source for session ${sessionId} has stopped`)
-      sessionTable.delete(sessionId)
+      simulcastSessionTable.delete(sessionId)
     })
 
     const trackResult = {}

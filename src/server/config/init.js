@@ -14,7 +14,8 @@ export const initConfig = async rawConfig => {
   const cert = await readFile(certPath)
   const endpoint = MediaServer.createEndpoint(serverAddress)
 
-  const sessionTable = new Map()
+  const simulcastSessionTable = new Map()
+  const broadcastSessionTable = new Map()
 
   MediaServer.enableDebug(true)
   // MediaServer.enableUltraDebug(true)
@@ -25,7 +26,8 @@ export const initConfig = async rawConfig => {
     endpoint,
     staticDir,
     serverPort,
-    sessionTable,
-    serverAddress
+    serverAddress,
+    simulcastSessionTable,
+    broadcastSessionTable
   }
 }
