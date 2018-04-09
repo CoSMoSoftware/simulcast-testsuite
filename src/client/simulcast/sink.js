@@ -17,13 +17,15 @@ export const createEchoStreams = async (container, sessionId, tracks) => {
 
       await pc.setLocalDescription(offer)
 
-      const response = await fetch(`/api/simulcast/sessions/${sessionId}/sink?trackId=${trackId}&rid=${rid}`, {
+      const response = await fetch(`/api/simulcast/sessions/${sessionId}/sink`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          offer: offer.sdp
+          rid,
+          offer: offer.sdp,
+          track_id: trackId,
         })
       })
 

@@ -16,8 +16,11 @@ export const createSimulcastApiRouter = config => {
   }))
 
   router.post('/sessions/:sessionId/sink', wrapHandler((request, response) => {
-    const { trackId, rid } = request.query
-    const { offer: rawOffer } = request.body
+    const {
+      rid,
+      offer: rawOffer,
+      track_id: trackId
+    } = request.body
     const sessionId = request.params.sessionId
 
     return createSimulcastSink({
