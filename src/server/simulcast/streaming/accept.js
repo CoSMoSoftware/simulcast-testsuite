@@ -93,7 +93,7 @@ export const acceptSimulcastStream = (transport, offer, answer) => {
       for (const alternatives of encodings) {
         for (const encodingInfo of alternatives) {
           const rid = encodingInfo.getId()
-          trackTable.set(rid, incomingStream)
+          trackTable.set(rid, incomingTrack)
         }
       }
     }

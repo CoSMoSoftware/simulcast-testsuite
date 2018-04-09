@@ -14,7 +14,7 @@ export const streamSimulcast = async (sinkVideoContainer, videoElement) => {
     // rtcpMuxPolicy: 'require'
   })
 
-  handleTrackEvent(pc, sinkVideoContainer, 'Echo Stream')
+  handleTrackEvent(pc, sinkVideoContainer, 'Echo Stream from same PC')
 
   const videoTrack = mediaStream.getVideoTracks()[0]
   console.log('video track:', videoTrack)
@@ -25,9 +25,9 @@ export const streamSimulcast = async (sinkVideoContainer, videoElement) => {
   const transceiver = pc.addTransceiver(videoTrack, {
     direction: 'sendrecv',
     sendEncodings: [
-      { rid: 'a' },
-      { rid: 'b', scaleDownResolutionBy: 2.0 },
-      { rid: 'c', scaleDownResolutionBy: 4.0 }
+      { rid: 'original' },
+      { rid: 'half', scaleDownResolutionBy: 2.0 },
+      { rid: 'quarter', scaleDownResolutionBy: 4.0 }
     ]
   })
 
@@ -41,9 +41,9 @@ export const streamSimulcast = async (sinkVideoContainer, videoElement) => {
   // is currently not working in Firefox.
   await transceiver.sender.setParameters({
     encodings: [
-      { rid: 'a' },
-      { rid: 'b', scaleDownResolutionBy: 2.0 },
-      { rid: 'c', scaleDownResolutionBy: 4.0 }
+      { rid: 'original' },
+      { rid: 'half', scaleDownResolutionBy: 2.0 },
+      { rid: 'quarter', scaleDownResolutionBy: 4.0 }
     ]
   })
 

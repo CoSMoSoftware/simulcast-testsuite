@@ -14,7 +14,7 @@ import {
     -> IncomingStreamTrack
     -> ()
  */
-export const forwardStream = async (transport, offer, answer, trackId, rid, incomingStream) => {
+export const forwardStream = async (transport, offer, answer, trackId, rid, incomingTrack) => {
   // videoOffer :: MediaInfo
   const videoOffer = offer.getMedia('video')
   if (!videoOffer) {
@@ -30,27 +30,27 @@ export const forwardStream = async (transport, offer, answer, trackId, rid, inco
 
   answer.addMedia(video)
 
+  transport.setLocalProperties({
+    video: answer.getMedia('video')
+  })
+
   // outgoingStream :: OutgoingStream
   const outgoingStream = transport.createOutgoingStream({
     video: true
   })
 
-  outgoingStream.attachTo(incomingStream)
-
   // outgoingTrack :: OutgoingStreamTrack
-  // const outgoingTrack = outgoingStream.getVideoTracks()[0]
-  // if (!outgoingTrack) {
-  //   throw new Error('Expected outgoing stream to have at least one video track')
-  // }
+  const outgoingTrack = outgoingStream.getVideoTracks()[0]
+  if (!outgoingTrack) {
+    throw new Error('Expected outgoing stream to have at least one video track')
+  }
 
   // transponder :: Transponder
-  // const transponder = outgoingTrack.attachTo(incomingTrack)
-  // transponder.selectEncoding(rid)
+  const transponder = outgoingTrack.attachTo(incomingTrack)
+  transponder.selectEncoding(rid)
 
   // streamInfo :: StreamInfo
   const streamInfo = outgoingStream.getStreamInfo()
 
   answer.addStream(streamInfo)
-
-  // console.log('added outgoing track', outgoingTrack)
 }

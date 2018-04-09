@@ -27,6 +27,10 @@ export const forwardStream = async (transport, offer, answer, incomingStream) =>
 
   answer.addMedia(video)
 
+  transport.setLocalProperties({
+    video: answer.getMedia('video')
+  })
+
   // outgoingStream :: OutgoingStream
   const outgoingStream = transport.createOutgoingStream({
     video: true

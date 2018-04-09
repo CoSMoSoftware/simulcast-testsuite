@@ -40,8 +40,6 @@ export const createEchoStreams = async (container, sessionId, tracks) => {
         type: 'answer',
         sdp: result.answer
       })
-
-      return
     }
   }
 }

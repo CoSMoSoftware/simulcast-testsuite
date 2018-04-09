@@ -26,13 +26,13 @@ export const createSimulcastSinkHandler = config => {
       throw new Error(`invalid track ID ${trackId}`)
     }
 
-    const incomingStream = trackTable.get(rid)
-    if (!incomingStream) {
+    const incomingTrack = trackTable.get(rid)
+    if (!incomingTrack) {
       throw new Error(`invalid rid ${rid}`)
     }
 
     const { transport, offer, answer } = initOffer(endpoint, rawOffer)
-    forwardStream(transport, offer, answer, trackId, rid, incomingStream)
+    forwardStream(transport, offer, answer, trackId, rid, incomingTrack)
 
     return {
       answer: answer.toString()

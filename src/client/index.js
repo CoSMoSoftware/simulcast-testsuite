@@ -1,5 +1,5 @@
-// import { runSimulcastApp } from './simulcast'
-import { runBroadcastApp } from './broadcast'
+import { runSimulcastApp } from './simulcast'
+// import { runBroadcastApp } from './broadcast'
 
 window.addEventListener('load', () =>
-  runBroadcastApp().catch(console.error))
+  runSimulcastApp().catch(console.error))

@@ -2,23 +2,25 @@ export const handleTrackEvent = (pc, container, label) => {
   pc.addEventListener('track', ev => {
     console.log('ontrack event:', ev)
 
-    const mediaStreams = ev.streams
-    console.log('mediaStreams:', mediaStreams)
+    const videoTrack = ev.track
+    console.log('videoTrack:', videoTrack)
 
-    for (const mediaStream of mediaStreams) {
-      const videoElement = document.createElement('video')
-      videoElement.srcObject = mediaStream
-      videoElement.autoplay = true
+    const videoElement = document.createElement('video')
+    videoElement.srcObject = new MediaStream([videoTrack])
+    videoElement.autoplay = true
 
-      const desc = document.createElement('p')
-      desc.innerText = `${label} - stream ID: ${mediaStream.id}`
+    const desc = document.createElement('h2')
+    desc.innerText = label
 
-      const div = document.createElement('div')
-      div.classList.add('sink-video-container')
-      div.appendChild(videoElement)
-      div.appendChild(desc)
+    const idField = document.createElement('h4')
+    idField.innerText = `track ID: ${videoTrack.id}`
 
-      container.appendChild(div)
-    }
+    const div = document.createElement('div')
+    div.classList.add('video-container')
+    div.appendChild(videoElement)
+    div.appendChild(desc)
+    div.appendChild(idField)
+
+    container.appendChild(div)
   })
 }

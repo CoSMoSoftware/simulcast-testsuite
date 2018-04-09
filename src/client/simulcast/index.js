@@ -5,12 +5,11 @@ export const runSimulcastApp = async () => {
   console.log('running simulcast test')
 
   const sourceVideo = document.getElementById('source-video')
-  const sinkVideoContainer = document.getElementById('sink-video-container')
+  const sourceVideoContainer = document.getElementById('source-videos')
+  const sinkVideoContainer = document.getElementById('sink-videos')
 
-  const result = await streamSimulcast(sinkVideoContainer, sourceVideo)
+  const result = await streamSimulcast(sourceVideoContainer, sourceVideo)
   console.log('stream result:', result)
-
-  // await new Promise(resolve => setTimeout(resolve, 3000))
 
   const { sessionId, tracks } = result
   await createEchoStreams(sinkVideoContainer, sessionId, tracks)

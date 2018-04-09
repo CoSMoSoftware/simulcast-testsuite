@@ -5,7 +5,7 @@ export const runBroadcastApp = async () => {
   console.log('running broadcast test')
 
   const sourceVideo = document.getElementById('source-video')
-  const sinkVideoContainer = document.getElementById('sink-video-container')
+  const sinkVideoContainer = document.getElementById('sink-videos')
 
   const result = await streamBroadcast(sinkVideoContainer, sourceVideo)
   console.log('stream result:', result)
