@@ -7,12 +7,17 @@ export const initConfig = async rawConfig => {
     keyPath,
     certPath,
     staticDir,
-    serverPort,
-    serverAddress
+    serverPort
   } = rawConfig
 
   const key = await readFile(keyPath)
   const cert = await readFile(certPath)
+
+  let { serverAddress } = rawConfig
+  if (process.env.MEDIA_SERVER_IP) {
+    serverAddress = process.env.MEDIA_SERVER_IP
+  }
+
   const endpoint = MediaServer.createEndpoint(serverAddress)
 
   const simulcastSessionTable = new Map()

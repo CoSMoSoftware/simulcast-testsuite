@@ -6,7 +6,12 @@ import { handleError } from './common/util'
 const runServer = async () => {
   const config = await loadConfig()
 
-  const { key, cert, serverPort } = config
+  const {
+    key,
+    cert,
+    serverPort,
+    serverAddress
+  } = config
 
   const app = createApp(config)
 
@@ -17,7 +22,8 @@ const runServer = async () => {
 
   server.listen(serverPort)
 
-  console.log('simulcast test server listening at', serverPort)
+  console.log('Medooze media server listening at address', serverAddress)
+  console.log('HTTP test server listening at', serverPort)
 }
 
 if (require.main === module) {

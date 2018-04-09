@@ -2,7 +2,7 @@
   "debug": false,
   "serverPort": 8080,
   "staticDir": "public",
-  "serverAddress": "192.168.1.71",
+  "serverAddress": "192.168.1.11",
   "keyPath": "config/server.key",
   "certPath": "config/server.cert"
 }

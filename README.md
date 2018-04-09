@@ -12,7 +12,7 @@ git clone https://github.com/CoSMoSoftware/simulcast-testsuite.git
 cd simulcast-testsuite
 npm install
 npm run build-client
-npm start
+MEDIA_SERVER_IP={ServerIP} npm start
 ```
 
 ## Development
@@ -27,10 +27,14 @@ npm run dev
 
 ## Configuration
 
-The `serverAddress` field in [config/config.json](config/config.json) _must_
-be changed to an accessible IP address from the test client. An invalid
-`serverAddress` would cause the ICE connection to fail. Also note that
-`127.0.0.1` does _not_ with Medooze.
+The media server IP _must_ be set to an accessible IP address from the test
+client. An invalid address would cause the ICE connection to fail. Also note
+that `127.0.0.1` does _not_ with Medooze. The server IP can be changed in
+two ways:
+
+  - `serverAddress` field in [config/config.json](config/config.json)
+  - The `MEDIA_SERVER_IP` environment variable. Note that this overrides
+    any value in config.json.
 
 ## Simulcast Testing
 
