@@ -6,11 +6,19 @@ export const createEchoStream = async (container, sessionId) => {
 
   handleTrackEvent(pc, container, 'Broadcasted Stream')
 
-  pc.addTransceiver('video', {
-    direction: 'sendrecv'
-  })
+  let offer
+  if (pc.addTransceiver) {
+    pc.addTransceiver('video', {
+      direction: 'recvonly'
+    })
 
-  const offer = await pc.createOffer()
+    offer = await pc.createOffer()
+  } else {
+    offer = await pc.createOffer({
+      offerToReceiveVideo: true
+    })
+  }
+
   console.log('offer SDP:', offer.sdp)
 
   await pc.setLocalDescription(offer)

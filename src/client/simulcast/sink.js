@@ -9,7 +9,7 @@ export const createEchoStreams = async (container, sessionId, tracks) => {
       handleTrackEvent(pc, container, `Simulcast RID ${rid}`)
 
       pc.addTransceiver('video', {
-        direction: 'sendrecv'
+        direction: 'recvonly'
       })
 
       const offer = await pc.createOffer()

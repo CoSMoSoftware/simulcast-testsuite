@@ -9,10 +9,7 @@ export const streamSimulcast = async (sinkVideoContainer, videoElement) => {
   videoElement.srcObject = mediaStream
   videoElement.autoplay = true
 
-  const pc = new RTCPeerConnection({
-    // bundlePolicy: 'max-bundle',
-    // rtcpMuxPolicy: 'require'
-  })
+  const pc = new RTCPeerConnection()
 
   handleTrackEvent(pc, sinkVideoContainer, 'Echo Stream from same PC')
 

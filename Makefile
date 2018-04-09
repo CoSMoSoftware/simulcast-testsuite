@@ -1,4 +1,3 @@
-
 lint: src
 	eslint src
 

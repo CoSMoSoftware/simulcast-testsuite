@@ -31,4 +31,6 @@ const runTest = async () => {
 }
 
 handleError()
+
 runTest()
+  .then(() => process.exit(0))
