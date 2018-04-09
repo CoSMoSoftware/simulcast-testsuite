@@ -7,11 +7,11 @@ const runApp = async () => {
   const sourceVideo = document.getElementById('source-video')
   const sinkVideoContainer = document.getElementById('sink-video-container')
 
-  const result = await streamSimulcast(sourceVideo)
+  const result = await streamSimulcast(sinkVideoContainer, sourceVideo)
   console.log('stream result:', result)
 
-  const { sessionId, tracks } = result
-  await createEchoStreams(sinkVideoContainer, sessionId, tracks)
+  // const { sessionId, tracks } = result
+  // await createEchoStreams(sinkVideoContainer, sessionId, tracks)
 }
 
 window.addEventListener('load', () =>

@@ -1,4 +1,6 @@
-export const streamSimulcast = async videoElement => {
+import { handleTrackEvent } from './track'
+
+export const streamSimulcast = async (sinkVideoContainer, videoElement) => {
   const mediaStream = await navigator.mediaDevices.getUserMedia({
     video: true
   })
@@ -11,6 +13,8 @@ export const streamSimulcast = async videoElement => {
     bundlePolicy: 'max-bundle',
     rtcpMuxPolicy: 'require'
   })
+
+  handleTrackEvent(pc, sinkVideoContainer, 'Echo Stream')
 
   const videoTrack = mediaStream.getVideoTracks()[0]
   console.log('video track:', videoTrack)

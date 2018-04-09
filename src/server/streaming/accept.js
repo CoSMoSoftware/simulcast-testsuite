@@ -56,11 +56,11 @@ export const acceptSimulcastStream = (transport, offer, answer) => {
     const incomingStream = transport.createIncomingStream(streamInfo)
 
     // Debugging code to make sure we are receiving video content
-    // const outgoingStream = transport.createOutgoingStream({
-    //   video: true
-    // })
-    // outgoingStream.attachTo(incomingStream)
-    // answer.addStream(outgoingStream.getStreamInfo())
+    const outgoingStream = transport.createOutgoingStream({
+      video: true
+    })
+    outgoingStream.attachTo(incomingStream)
+    answer.addStream(outgoingStream.getStreamInfo())
     //
     // const recorder = createRecorder(`tmp/${new Date()}.mp4`)
     // recorder.record(incomingStream)
