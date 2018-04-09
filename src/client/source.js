@@ -8,8 +8,8 @@ export const streamSimulcast = async videoElement => {
   videoElement.autoplay = true
 
   const pc = new RTCPeerConnection({
-		bundlePolicy: 'max-bundle',
-		rtcpMuxPolicy : 'require'
+    bundlePolicy: 'max-bundle',
+    rtcpMuxPolicy: 'require'
   })
 
   const videoTrack = mediaStream.getVideoTracks()[0]

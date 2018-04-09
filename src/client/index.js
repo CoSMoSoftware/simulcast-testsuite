@@ -11,8 +11,7 @@ const runApp = async () => {
   console.log('stream result:', result)
 
   const { sessionId, tracks } = result
-
-  // await createEchoStreams(sinkVideoContainer, sessionId, tracks)
+  await createEchoStreams(sinkVideoContainer, sessionId, tracks)
 }
 
 window.addEventListener('load', () =>

@@ -35,7 +35,10 @@ export const forwardStream = async (transport, offer, answer, rid, incomingTrack
   })
 
   // outgoingTrack :: OutgoingStreamTrack
-  const outgoingTrack = outgoingStream.getTracks()[0]
+  const outgoingTrack = outgoingStream.getVideoTracks()[0]
+  if (!outgoingTrack) {
+    throw new Error('Expected outgoing stream to have at least one video track')
+  }
 
   // transponder :: Transponder
   const transponder = outgoingTrack.attachTo(incomingTrack)

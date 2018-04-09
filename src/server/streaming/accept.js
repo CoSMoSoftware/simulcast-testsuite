@@ -31,14 +31,14 @@ export const acceptSimulcastStream = (transport, offer, answer) => {
     throw new Error('offer video must have simulcast enabled')
   }
 
-  // video :: MediaInfo
-  const video = videoOffer.answer({
+  // videoAnswer :: MediaInfo
+  const videoAnswer = videoOffer.answer({
     codecs: videoCodecs,
     extensions: headerExtensions,
     simulcast: true
   })
 
-  answer.addMedia(video)
+  answer.addMedia(videoAnswer)
 
   transport.setLocalProperties({
     video: answer.getMedia('video')
@@ -53,25 +53,36 @@ export const acceptSimulcastStream = (transport, offer, answer) => {
   // streamInfo :: StreamInfo
   for (const streamInfo of offerStreams.values()) {
     // incomingStream :: IncomingStream
-    console.log('create IncomingStream', streamInfo)
     const incomingStream = transport.createIncomingStream(streamInfo)
-    console.log('created IncomingStream', incomingStream)
 
-    const recorder = createRecorder(`tmp/${new Date()}.mp4`)
-    recorder.record(incomingStream)
+    // Debugging code to make sure we are receiving video content
+    // const outgoingStream = transport.createOutgoingStream({
+    //   video: true
+    // })
+    // outgoingStream.attachTo(incomingStream)
+    // answer.addStream(outgoingStream.getStreamInfo())
+    //
+    // const recorder = createRecorder(`tmp/${new Date()}.mp4`)
+    // recorder.record(incomingStream)
+    //
+    // setTimeout(() => {
+    //   console.log('stopping recording')
+    //   recorder.stop()
+    // }, 10000)
 
     // trackInfos :: Map String TrackInfo
     const trackInfos = streamInfo.getTracks()
 
-    for (const trackInfo of trackInfos.values()) {
-      const trackId = trackInfo.getId()
+    // incomingTracks:: Array IncomingStreamTrack
+    const incomingTracks = incomingStream.getTracks()
+
+    for (const incomingTrack of incomingTracks) {
+      const trackId = incomingTrack.getId()
+      const trackInfo = trackInfos.get(trackId)
 
       // trackTable :: Map String IncomingStreamTrack
       const trackTable = new Map()
       streamTable.set(trackId, trackTable)
-
-      // incomingTrack :: IncomingStreamTrack
-      const incomingTrack = incomingStream.getTrack(trackId)
 
       // encodings :: Array (Array TrackEncodingInfo)
       const encodings = trackInfo.getEncodings()
@@ -84,11 +95,6 @@ export const acceptSimulcastStream = (transport, offer, answer) => {
       }
     }
   }
-
-  const outgoingStream  = transport.createOutgoingStream({
-    video: true
-  })
-  answer.addStream(outgoingStream.getStreamInfo())
 
   return streamTable
 }
