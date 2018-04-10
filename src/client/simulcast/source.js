@@ -88,6 +88,7 @@ export const streamSimulcast = async (sinkVideoContainer, videoElement) => {
 
   return {
     tracks,
-    sessionId
+    sessionId,
+    pc
   }
 }

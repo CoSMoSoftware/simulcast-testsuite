@@ -10,7 +10,7 @@ export const runSimulcastApp = async () => {
 
   const result = await streamSimulcast(sourceVideoContainer, sourceVideo)
   console.log('stream result:', result)
-
+  window.simulcast = result
   const { sessionId, tracks } = result
   await createEchoStreams(sinkVideoContainer, sessionId, tracks)
 }
