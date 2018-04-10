@@ -1,6 +1,7 @@
 {
   "debug": false,
-  "serverPort": 8080,
+  "httpPort": 8080,
+  "httpsPort": 8443,
   "staticDir": "public",
   "serverAddress": "192.168.1.11",
   "keyPath": "config/server.key",

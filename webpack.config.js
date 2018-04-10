@@ -13,7 +13,7 @@ module.exports = {
   plugins: [
     new webpack.SourceMapDevToolPlugin({
       filename: '[name].js.map',
-      publicPath: 'https://localhost:8080/js/'
+      publicPath: '/js/'
     })
   ]
 }

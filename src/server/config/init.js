@@ -6,17 +6,14 @@ export const initConfig = async rawConfig => {
     debug,
     keyPath,
     certPath,
+    httpPort,
+    httpsPort,
     staticDir,
-    serverPort
+    serverAddress
   } = rawConfig
 
   const key = await readFile(keyPath)
   const cert = await readFile(certPath)
-
-  let { serverAddress } = rawConfig
-  if (process.env.MEDIA_SERVER_IP) {
-    serverAddress = process.env.MEDIA_SERVER_IP
-  }
 
   const endpoint = MediaServer.createEndpoint(serverAddress)
 
@@ -31,8 +28,9 @@ export const initConfig = async rawConfig => {
     key,
     cert,
     endpoint,
+    httpPort,
+    httpsPort,
     staticDir,
-    serverPort,
     serverAddress,
     simulcastSessionTable,
     broadcastSessionTable

@@ -25,7 +25,7 @@ export const createEchoStreams = async (container, sessionId, tracks) => {
         body: JSON.stringify({
           rid,
           offer: offer.sdp,
-          track_id: trackId,
+          track_id: trackId
         })
       })
 
