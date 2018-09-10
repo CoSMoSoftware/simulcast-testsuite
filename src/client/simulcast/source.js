@@ -9,7 +9,9 @@ export const streamSimulcast = async (sinkVideoContainer, videoElement) => {
   videoElement.srcObject = mediaStream
   videoElement.autoplay = true
 
-  const pc = new RTCPeerConnection()
+  const pc = new RTCPeerConnection({
+    sdpSemantics: 'unified-plan'
+  })
 
   handleTrackEvent(pc, sinkVideoContainer, 'Echo Stream from same PC')
 
@@ -28,7 +30,21 @@ export const streamSimulcast = async (sinkVideoContainer, videoElement) => {
     ]
   })
 
-  // const sender = pc.addTrack(videoTrack)
+
+  const { sender } = transceiver
+  const param = sender.getParameters()
+
+  console.log('sender params:', param)
+
+  const param2 = Object.assign({}, param, {
+    encodings: [
+      { rid: 'original' },
+      { rid: 'half', scaleDownResolutionBy: 2.0 },
+      { rid: 'quarter', scaleDownResolutionBy: 4.0 }
+    ]
+  })
+
+  console.log('param2:', param2)
 
   // TODO: Remove setParameters call when releasing.
   // rid is a read only parameter and should not
@@ -36,13 +52,7 @@ export const streamSimulcast = async (sinkVideoContainer, videoElement) => {
   // to enable simulcast should be by setting the
   // same parameters in addTransceiver, but that
   // is currently not working in Firefox.
-  await transceiver.sender.setParameters({
-    encodings: [
-      { rid: 'original' },
-      { rid: 'half', scaleDownResolutionBy: 2.0 },
-      { rid: 'quarter', scaleDownResolutionBy: 4.0 }
-    ]
-  })
+  await transceiver.sender.setParameters(param2)
 
   console.log('transceiver after set param:', transceiver)
 
@@ -55,6 +65,7 @@ export const streamSimulcast = async (sinkVideoContainer, videoElement) => {
   // Firefox is using an older format of the simulcast line.
   // We convert it to the new format temporarily to test the test.
   const offerSdp = offer.sdp.replace(': send rid=', ':send ')
+  // const offerSdp = offer.sdp
 
   const response = await fetch('/api/simulcast/source', {
     method: 'POST',

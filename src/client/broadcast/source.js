@@ -9,7 +9,9 @@ export const streamBroadcast = async (sinkVideoContainer, videoElement) => {
   videoElement.srcObject = mediaStream
   videoElement.autoplay = true
 
-  const pc = new RTCPeerConnection()
+  const pc = new RTCPeerConnection({
+    sdpSemantics: 'unified-plan'
+  })
 
   handleTrackEvent(pc, sinkVideoContainer, 'Echo Stream')
 

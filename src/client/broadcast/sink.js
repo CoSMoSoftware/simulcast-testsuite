@@ -2,7 +2,9 @@ import { handleTrackEvent } from '../common/track'
 
 export const createEchoStream = async (container, sessionId) => {
   console.log(`creating echo stream for session ${sessionId}`)
-  const pc = new RTCPeerConnection()
+  const pc = new RTCPeerConnection({
+    sdpSemantics: 'unified-plan'
+  })
 
   handleTrackEvent(pc, container, 'Broadcasted Stream')
 

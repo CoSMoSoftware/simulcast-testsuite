@@ -54,6 +54,7 @@ export const acceptSimulcastStream = (transport, offer, answer) => {
   // streamInfo :: StreamInfo
   for (const streamInfo of offerStreams.values()) {
     // incomingStream :: IncomingStream
+    console.log('creating incoming stream', streamInfo)
     const incomingStream = transport.createIncomingStream(streamInfo)
 
     const outgoingStream = transport.createOutgoingStream({

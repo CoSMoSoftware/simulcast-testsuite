@@ -4,7 +4,9 @@ export const createEchoStreams = async (container, sessionId, tracks) => {
   for (const [trackId, rids] of Object.entries(tracks)) {
     for (const rid of rids) {
       console.log(`creating echo stream for track ${trackId} and rid ${rid}`)
-      const pc = new RTCPeerConnection()
+      const pc = new RTCPeerConnection({
+        sdpSemantics: 'unified-plan'
+      })
 
       handleTrackEvent(pc, container, `Simulcast RID ${rid}`)
 
