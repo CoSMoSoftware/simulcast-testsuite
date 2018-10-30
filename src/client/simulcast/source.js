@@ -1,4 +1,58 @@
+import { mungeSdp } from './sdp'
 import { handleTrackEvent } from '../common/track'
+
+const createOfferChrome = async videoTrack => {
+  const pc = new RTCPeerConnection()
+  pc.addTrack(videoTrack)
+
+  const offer = await pc.createOffer()
+
+  console.log('original offer:', offer.sdp)
+
+  const offerSdp = mungeSdp(offer.sdp)
+  console.log('munged sdp:', offerSdp)
+
+  return {
+    pc,
+    offerSdp
+  }
+}
+
+const createOfferFirefox = async videoTrack => {
+  const pc = new RTCPeerConnection()
+
+  const transceiver = pc.addTransceiver(videoTrack, {
+    direction: 'sendrecv',
+    sendEncodings: [
+      { rid: 'original', active: true },
+      { rid: 'half', active: true, scaleDownResolutionBy: 2.0 },
+      { rid: 'quarter', active: true, scaleDownResolutionBy: 4.0 }
+    ]
+  })
+
+  const { sender } = transceiver
+  const param = sender.getParameters()
+
+  console.log('sender params:', param)
+
+  const offer = await pc.createOffer()
+
+  const offerSdp = offer.sdp
+  console.log('offer:', offer.sdp)
+
+  return {
+    pc,
+    offerSdp
+  }
+}
+
+const createOffer = async videoTrack => {
+  if (navigator.userAgent.includes('Chrome')) {
+    return createOfferChrome(videoTrack)
+  } else {
+    return createOfferFirefox(videoTrack)
+  }
+}
 
 export const streamSimulcast = async (sinkVideoContainer, videoElement) => {
   const mediaStream = await navigator.mediaDevices.getUserMedia({
@@ -9,63 +63,20 @@ export const streamSimulcast = async (sinkVideoContainer, videoElement) => {
   videoElement.srcObject = mediaStream
   videoElement.autoplay = true
 
-  const pc = new RTCPeerConnection({
-    sdpSemantics: 'unified-plan'
-  })
-
-  handleTrackEvent(pc, sinkVideoContainer, 'Echo Stream from same PC')
-
   const videoTrack = mediaStream.getVideoTracks()[0]
   console.log('video track:', videoTrack)
   if (!videoTrack) {
     throw new Error('expect at least video track to be present')
   }
 
-  const transceiver = pc.addTransceiver(videoTrack, {
-    direction: 'sendrecv',
-    sendEncodings: [
-      { rid: 'original' },
-      { rid: 'half', scaleDownResolutionBy: 2.0 },
-      { rid: 'quarter', scaleDownResolutionBy: 4.0 }
-    ]
+  const { pc, offerSdp } = await createOffer(videoTrack)
+
+  handleTrackEvent(pc, sinkVideoContainer, 'Echo Stream from same PC')
+
+  await pc.setLocalDescription({
+    type: 'offer',
+    sdp: offerSdp
   })
-
-
-  const { sender } = transceiver
-  const param = sender.getParameters()
-
-  console.log('sender params:', param)
-
-  const param2 = Object.assign({}, param, {
-    encodings: [
-      { rid: 'original' },
-      { rid: 'half', scaleDownResolutionBy: 2.0 },
-      { rid: 'quarter', scaleDownResolutionBy: 4.0 }
-    ]
-  })
-
-  console.log('param2:', param2)
-
-  // TODO: Remove setParameters call when releasing.
-  // rid is a read only parameter and should not
-  // be modified by setParameters. The correct way
-  // to enable simulcast should be by setting the
-  // same parameters in addTransceiver, but that
-  // is currently not working in Firefox.
-  await transceiver.sender.setParameters(param2)
-
-  console.log('transceiver after set param:', transceiver)
-
-  const offer = await pc.createOffer()
-  await pc.setLocalDescription(offer)
-
-  console.log('offer SDP:', offer.sdp)
-
-  // TODO: Remove the format conversion when releasing.
-  // Firefox is using an older format of the simulcast line.
-  // We convert it to the new format temporarily to test the test.
-  const offerSdp = offer.sdp.replace(': send rid=', ':send ')
-  // const offerSdp = offer.sdp
 
   const response = await fetch('/api/simulcast/source', {
     method: 'POST',
@@ -87,8 +98,7 @@ export const streamSimulcast = async (sinkVideoContainer, videoElement) => {
   const sessionId = result.session_id
   const { tracks } = result
 
-  // TODO: Remove the format conversion when releasing.
-  const answerSdp = result.answer.replace(':recv ', ': recv rid=')
+  const answerSdp = result.answer
 
   console.log('answer SDP:', answerSdp)
 

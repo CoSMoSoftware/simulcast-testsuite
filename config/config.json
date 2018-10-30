@@ -3,7 +3,7 @@
   "httpPort": 8080,
   "httpsPort": 8443,
   "staticDir": "public",
-  "serverAddress": "192.168.1.15",
+  "serverAddress": "10.86.0.164",
   "keyPath": "config/server.key",
   "certPath": "config/server.cert"
 }
